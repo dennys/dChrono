@@ -142,6 +142,16 @@ input:checked + .slider:before {
   font-size: 24px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: box-shadow 0.2s, transform 0.1s;
+}
+
+.fab:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.fab:active {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transform: translateY(1px);
 }
 
 #edit-view .edit-form {
@@ -165,11 +175,15 @@ input:checked + .slider:before {
   color: var(--on-surface-color);
   padding: 8px;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .weekdays {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px; /* Add small gap between buttons */
+  padding: 0 4px; /* Small padding on sides */
 }
 
 .weekday {
@@ -177,15 +191,24 @@ input:checked + .slider:before {
   border: 1px solid var(--disabled-color);
   color: var(--on-surface-color);
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  aspect-ratio: 1; /* Keep circular */
+  width: 12px;
+  height: 12px;
   cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 0.2s, border-color 0.2s;
+  min-width: 0;
+  flex: 1; /* Each button takes equal space */
+  font-size: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .weekday.active {
   background-color: var(--primary-color);
   color: var(--on-primary-color);
-  border-color: var(--primary-color);
+  border: 2px solid var(--on-surface-color);
 }
 
 #edit-view .footer {
