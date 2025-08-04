@@ -1,26 +1,37 @@
 {
   "extName": {
-    "message": "Simple Alarm",
+    "message": "dChrono",
     "description": "The name of the extension."
   },
   "extDesc": {
-    "message": "A simple alarm extension.",
+    "message": "A modern and sleek alarm clock extension.",
     "description": "The description of the extension."
   },
-  "alarmNameLabel": {
-    "message": "Alarm Name:",
-    "description": "Label for the alarm name input."
+  "addAlarm": {
+    "message": "Add Alarm",
+    "description": "Button text to add a new alarm."
   },
-  "alarmTimeLabel": {
-    "message": "Alarm Time:",
-    "description": "Label for the alarm time input."
+  "save": {
+    "message": "Save",
+    "description": "Button text to save an alarm."
   },
-  "setAlarmButton": {
-    "message": "Set Alarm",
-    "description": "Text for the set alarm button."
+  "cancel": {
+    "message": "Cancel",
+    "description": "Button text to cancel an action."
   },
-  "activeAlarmsHeading": {
-    "message": "Active Alarms",
-    "description": "Heading for the list of active alarms."
-  }
+  "time": {
+    "message": "Time",
+    "description": "Label for time input."
+  },
+  "repeat": {
+    "message": "Repeat",
+    "description": "Label for alarm repeat options."
+  },
+  "sunday": { "message": "Sun" },
+  "monday": { "message": "Mon" },
+  "tuesday": { "message": "Tue" },
+  "wednesday": { "message": "Wed" },
+  "thursday": { "message": "Thu" },
+  "friday": { "message": "Fri" },
+  "saturday": { "message": "Sat" }
 }

@@ -1,30 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Simple Alarm</title>
+  <title>dChrono</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <h1>__MSG_extName__</h1>
-
-  <div>
-    <label for="alarm-name">__MSG_alarmNameLabel__</label>
-    <input type="text" id="alarm-name" />
+  <div id="main-view">
+    <div class="header">
+      <h1>dChrono</h1>
+    </div>
+    <div id="alarm-list-container">
+      <ul id="alarm-list">
+        <!-- Alarms will be dynamically inserted here -->
+      </ul>
+    </div>
+    <div class="footer">
+      <button id="add-alarm-btn" class="fab">+</button>
+    </div>
   </div>
 
-  <div>
-    <label for="alarm-time">__MSG_alarmTimeLabel__</label>
-    <input type="datetime-local" id="alarm-time" />
+  <div id="edit-view" class="hidden">
+    <div class="header">
+      <h1 id="edit-view-title">Add Alarm</h1>
+    </div>
+    <div class="edit-form">
+      <input type="hidden" id="alarm-id">
+      <div class="form-group">
+        <label for="alarm-time">__MSG_time__</label>
+        <input type="time" id="alarm-time" required>
+      </div>
+      <div class="form-group">
+        <label>__MSG_repeat__</label>
+        <div class="weekdays">
+          <button class="weekday" data-day="0">__MSG_sunday__</button>
+          <button class="weekday" data-day="1">__MSG_monday__</button>
+          <button class="weekday" data-day="2">__MSG_tuesday__</button>
+          <button class="weekday" data-day="3">__MSG_wednesday__</button>
+          <button class="weekday" data-day="4">__MSG_thursday__</button>
+          <button class="weekday" data-day="5">__MSG_friday__</button>
+          <button class="weekday" data-day="6">__MSG_saturday__</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <button id="cancel-btn">__MSG_cancel__</button>
+      <button id="save-btn">__MSG_save__</button>
+    </div>
   </div>
-
-  <button id="set-alarm">__MSG_setAlarmButton__</button>
-
-  <div id="status-message"></div>
-
-  <hr>
-
-  <h2>__MSG_activeAlarmsHeading__</h2>
-  <ul id="alarm-list"></ul>
 
   <script src="popup.js"></script>
 </body>
