@@ -2,15 +2,16 @@
   "name": "dchrono",
   "version": "1.0.0",
   "description": "A simple alarm extension for Chrome.",
+  "type": "module",
   "scripts": {
-    "build": "webpack --mode=production"
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "preview": "vite preview"
   },
   "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.3",
     "@types/chrome": "^0.1.1",
-    "copy-webpack-plugin": "^13.0.0",
-    "ts-loader": "^9.5.2",
     "typescript": "^5.9.2",
-    "webpack": "^5.101.0",
-    "webpack-cli": "^6.0.1"
+    "vite": "^7.0.6"
   }
 }

@@ -1,0 +1,37 @@
+{
+  "extName": {
+    "message": "dChrono",
+    "description": "擴充功能名稱。"
+  },
+  "extDesc": {
+    "message": "一款現代且時尚的鬧鐘擴充功能。",
+    "description": "擴充功能的描述。"
+  },
+  "addAlarm": {
+    "message": "新增鬧鐘",
+    "description": "新增鬧鐘的按鈕文字。"
+  },
+  "save": {
+    "message": "儲存",
+    "description": "儲存鬧鐘的按鈕文字。"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "取消操作的按鈕文字。"
+  },
+  "time": {
+    "message": "時間",
+    "description": "時間輸入欄的標籤。"
+  },
+  "repeat": {
+    "message": "重複",
+    "description": "鬧鐘重複選項的標籤。"
+  },
+  "sunday": { "message": "日" },
+  "monday": { "message": "一" },
+  "tuesday": { "message": "二" },
+  "wednesday": { "message": "三" },
+  "thursday": { "message": "四" },
+  "friday": { "message": "五" },
+  "saturday": { "message": "六" }
+}

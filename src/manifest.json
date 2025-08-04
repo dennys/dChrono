@@ -9,28 +9,28 @@
     "notifications"
   ],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/popup.html",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "16": "src/icons/icon16.png",
+      "48": "src/icons/icon48.png",
+      "128": "src/icons/icon128.png"
     }
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background.ts"
   },
   "default_locale": "en",
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "src/icons/icon16.png",
+    "48": "src/icons/icon48.png",
+    "128": "src/icons/icon128.png"
   },
   "web_accessible_resources": [
     {
       "resources": [
-        "icons/icon16.png",
-        "icons/icon48.png",
-        "icons/icon128.png"
+        "src/icons/icon16.png",
+        "src/icons/icon48.png",
+        "src/icons/icon128.png"
       ],
       "matches": [
         "<all_urls>"
