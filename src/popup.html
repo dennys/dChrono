@@ -9,6 +9,7 @@
   <div id="main-view">
     <div class="header">
       <h1>dChrono</h1>
+      <button id="settings-btn" class="icon-btn">...</button>
     </div>
     <div id="alarm-list-container">
       <ul id="alarm-list">
@@ -46,6 +47,24 @@
     <div class="footer">
       <button id="cancel-btn">__MSG_cancel__</button>
       <button id="save-btn">__MSG_save__</button>
+    </div>
+  </div>
+
+  <div id="settings-view" class="hidden">
+    <div class="header">
+      <button id="back-to-main-btn" class="icon-btn">&lt;</button>
+      <h1>__MSG_settings__</h1>
+    </div>
+    <div class="settings-form">
+      <div class="form-group">
+        <label>__MSG_theme__</label>
+        <div id="theme-selector">
+            <input type="radio" id="theme-dark" name="theme" value="dark" checked>
+            <label for="theme-dark">__MSG_dark__</label>
+            <input type="radio" id="theme-light" name="theme" value="light">
+            <label for="theme-light">__MSG_light__</label>
+        </div>
+      </div>
     </div>
   </div>
 

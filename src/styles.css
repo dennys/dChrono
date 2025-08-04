@@ -20,8 +20,9 @@ body {
 }
 
 .header {
-  padding: 16px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
   border-bottom: 1px solid var(--surface-color);
 }
 
@@ -29,6 +30,27 @@ h1 {
   font-size: 1.25em;
   font-weight: 500;
   margin: 0;
+  flex-grow: 1;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--on-surface-color);
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 #alarm-list-container {
@@ -225,4 +247,56 @@ input:checked + .slider:before {
   padding: 12px 24px;
   cursor: pointer;
   font-weight: 500;
+}
+
+/* Settings View */
+#settings-view .settings-form {
+  padding: 16px;
+}
+
+#theme-selector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+#theme-selector input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+}
+
+#theme-selector label {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+    border: 1px solid var(--disabled-color);
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+#theme-selector input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    color: var(--on-primary-color);
+    border-color: var(--primary-color);
+}
+
+
+/* Light Theme */
+body.light-theme {
+    --primary-color: #1a73e8;
+    --background-color: #ffffff;
+    --surface-color: #f1f3f4;
+    --on-surface-color: #202124;
+    --on-primary-color: #ffffff;
+    --disabled-color: #5f6368;
+}
+
+body.light-theme .icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .weekday.active {
+    border-color: var(--on-surface-color);
 }

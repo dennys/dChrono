@@ -10,6 +10,7 @@ interface Alarm {
 // --- DOM Elements ---
 const mainView = document.getElementById('main-view') as HTMLDivElement;
 const editView = document.getElementById('edit-view') as HTMLDivElement;
+const settingsView = document.getElementById('settings-view') as HTMLDivElement;
 const alarmList = document.getElementById('alarm-list') as HTMLUListElement;
 const addAlarmBtn = document.getElementById('add-alarm-btn') as HTMLButtonElement;
 const cancelBtn = document.getElementById('cancel-btn') as HTMLButtonElement;
@@ -18,6 +19,9 @@ const editViewTitle = document.getElementById('edit-view-title') as HTMLHeadingE
 const alarmIdInput = document.getElementById('alarm-id') as HTMLInputElement;
 const alarmTimeInput = document.getElementById('alarm-time') as HTMLInputElement;
 const weekdayButtons = document.querySelectorAll('.weekday') as NodeListOf<HTMLButtonElement>;
+const settingsBtn = document.getElementById('settings-btn') as HTMLButtonElement;
+const backToMainBtn = document.getElementById('back-to-main-btn') as HTMLButtonElement;
+const themeSelector = document.getElementById('theme-selector') as HTMLDivElement;
 
 // --- App State ---
 let alarms: Alarm[] = [];
@@ -62,7 +66,17 @@ const localizeHtml = () => {
 const showMainView = () => {
   mainView.classList.remove('hidden');
   editView.classList.add('hidden');
+  settingsView.classList.add('hidden');
 };
+
+/**
+ * Shows the settings view.
+ */
+const showSettingsView = () => {
+  mainView.classList.add('hidden');
+  editView.classList.add('hidden');
+  settingsView.classList.remove('hidden');
+}
 
 /**
  * Shows the edit view and hides the main view.
@@ -197,16 +211,60 @@ const saveAndSyncAlarms = async () => {
   await syncAlarms();
 };
 
+/**
+ * Applies the selected theme.
+ * @param {string} theme - The theme to apply ('dark' or 'light').
+ */
+const applyTheme = (theme: string) => {
+    document.body.classList.toggle('light-theme', theme === 'light');
+    const themeInput = document.querySelector(`#theme-selector input[value=${theme}]`) as HTMLInputElement;
+    if (themeInput) {
+        themeInput.checked = true;
+    }
+};
+
+/**
+ * Loads the saved theme from storage and applies it.
+ */
+const loadTheme = async () => {
+    const result = await chrome.storage.local.get('theme');
+    applyTheme(result.theme || 'dark'); // Default to dark theme
+};
+
+/**
+ * Saves the selected theme to storage.
+ * @param {string} theme - The theme to save.
+ */
+const saveTheme = async (theme: string) => {
+    await chrome.storage.local.set({ theme });
+};
+
+
 // --- Event Listeners ---
 
 document.addEventListener('DOMContentLoaded', () => {
   localizeHtml();
   loadAlarms();
+  loadTheme();
   showMainView();
 });
 
 addAlarmBtn.addEventListener('click', () => {
   showEditView(null);
+});
+
+settingsBtn.addEventListener('click', () => {
+    showSettingsView();
+});
+
+backToMainBtn.addEventListener('click', () => {
+    showMainView();
+});
+
+themeSelector.addEventListener('change', (e) => {
+    const newTheme = (e.target as HTMLInputElement).value;
+    applyTheme(newTheme);
+    saveTheme(newTheme);
 });
 
 cancelBtn.addEventListener('click', () => {
