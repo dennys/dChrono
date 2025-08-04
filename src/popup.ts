@@ -1,11 +1,6 @@
-// Define the structure of an alarm
-interface Alarm {
-  id: string;
-  time: string; // "HH:MM"
-  days: number[]; // 0 for Sunday, 1 for Monday, etc.
-  enabled: boolean;
-  name?: string; // Optional name
-}
+import type { Alarm } from './lib/types';
+import { loadAlarms as loadAlarmsFromStorage, saveAlarms, saveTheme, loadTheme as loadThemeFromStorage } from './lib/storage';
+import { sortAlarms, addOrUpdateAlarm, deleteAlarm, syncChromeAlarms, toggleAlarmEnabled } from './lib/alarms';
 
 // --- DOM Elements ---
 const mainView = document.getElementById('main-view') as HTMLDivElement;
@@ -24,7 +19,7 @@ const backToMainBtn = document.getElementById('back-to-main-btn') as HTMLButtonE
 const themeSelector = document.getElementById('theme-selector') as HTMLDivElement;
 
 // --- App State ---
-let alarms: Alarm[] = [];
+let alarmsState: Alarm[] = [];
 const weekdayMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // --- Functions ---
@@ -106,14 +101,14 @@ const showEditView = (alarm: Alarm | null) => {
  */
 const renderAlarms = () => {
   alarmList.innerHTML = '';
-  if (alarms.length === 0) {
+  if (alarmsState.length === 0) {
     alarmList.innerHTML = '<li>No alarms set.</li>';
     return;
   }
 
-  alarms.sort((a, b) => a.time.localeCompare(b.time));
+  const sorted = sortAlarms(alarmsState);
 
-  alarms.forEach(alarm => {
+  sorted.forEach(alarm => {
     const listItem = document.createElement('li');
     listItem.className = 'alarm-item';
     listItem.dataset.id = alarm.id;
@@ -141,77 +136,6 @@ const renderAlarms = () => {
 };
 
 /**
- * Loads alarms from storage and renders them.
- */
-const loadAlarms = async () => {
-  const result = await chrome.storage.local.get('alarms');
-  alarms = result.alarms || [];
-  renderAlarms();
-};
-
-/**
- * Updates the actual chrome.alarms based on our stored alarm data.
- */
-const syncAlarms = async () => {
-  const { alarms: storedAlarms } = await chrome.storage.local.get('alarms');
-  await chrome.alarms.clearAll();
-
-  if (storedAlarms) {
-    storedAlarms.forEach((alarm: Alarm) => {
-      if (alarm.enabled) {
-        // For recurring alarms, we need to schedule them differently
-        if (alarm.days.length > 0) {
-          const now = new Date();
-          const [hours, minutes] = alarm.time.split(':').map(Number);
-
-          alarm.days.forEach(day => {
-            const alarmTime = new Date();
-            alarmTime.setHours(hours, minutes, 0, 0);
-
-            // Find the next occurrence of this day
-            let dayDifference = day - now.getDay();
-            if (dayDifference < 0 || (dayDifference === 0 && alarmTime.getTime() < now.getTime())) {
-              dayDifference += 7;
-            }
-
-            alarmTime.setDate(now.getDate() + dayDifference);
-
-            // The name of the Chrome alarm will be unique for each day
-            const alarmName = `${alarm.id}_${day}`;
-            chrome.alarms.create(alarmName, {
-              when: alarmTime.getTime(),
-              periodInMinutes: 7 * 24 * 60 // Repeats weekly
-            });
-          });
-        } else {
-          // For non-recurring alarms
-          const alarmTime = new Date();
-          const [hours, minutes] = alarm.time.split(':').map(Number);
-          alarmTime.setHours(hours, minutes, 0, 0);
-
-          if (alarmTime.getTime() < Date.now()) {
-            alarmTime.setDate(alarmTime.getDate() + 1); // Schedule for tomorrow if time has passed
-          }
-
-          chrome.alarms.create(alarm.id, {
-            when: alarmTime.getTime()
-          });
-        }
-      }
-    });
-  }
-};
-
-
-/**
- * Saves alarms to storage and syncs with chrome.alarms API.
- */
-const saveAndSyncAlarms = async () => {
-  await chrome.storage.local.set({ alarms });
-  await syncAlarms();
-};
-
-/**
  * Applies the selected theme.
  * @param {string} theme - The theme to apply ('dark' or 'light').
  */
@@ -224,27 +148,26 @@ const applyTheme = (theme: string) => {
 };
 
 /**
- * Loads the saved theme from storage and applies it.
+ * Loads alarms from storage, updates state, and re-renders the list.
  */
-const loadTheme = async () => {
-    const result = await chrome.storage.local.get('theme');
-    applyTheme(result.theme || 'dark'); // Default to dark theme
+const refreshAlarms = async () => {
+    alarmsState = await loadAlarmsFromStorage();
+    renderAlarms();
 };
 
 /**
- * Saves the selected theme to storage.
- * @param {string} theme - The theme to save.
+ * Loads the theme from storage and applies it.
  */
-const saveTheme = async (theme: string) => {
-    await chrome.storage.local.set({ theme });
+const loadTheme = async () => {
+    const theme = await loadThemeFromStorage();
+    applyTheme(theme);
 };
-
 
 // --- Event Listeners ---
 
 document.addEventListener('DOMContentLoaded', () => {
   localizeHtml();
-  loadAlarms();
+  refreshAlarms();
   loadTheme();
   showMainView();
 });
@@ -261,10 +184,10 @@ backToMainBtn.addEventListener('click', () => {
     showMainView();
 });
 
-themeSelector.addEventListener('change', (e) => {
+themeSelector.addEventListener('change', async (e) => {
     const newTheme = (e.target as HTMLInputElement).value;
     applyTheme(newTheme);
-    saveTheme(newTheme);
+    await saveTheme(newTheme);
 });
 
 cancelBtn.addEventListener('click', () => {
@@ -284,50 +207,49 @@ saveBtn.addEventListener('click', async () => {
     .filter(btn => btn.classList.contains('active'))
     .map(btn => parseInt(btn.dataset.day || '0', 10));
 
-  const existingIndex = alarms.findIndex(a => a.id === id);
-
   const newAlarm: Alarm = { id, time, days, enabled: true };
 
-  if (existingIndex > -1) {
-    alarms[existingIndex] = newAlarm;
-  } else {
-    alarms.push(newAlarm);
-  }
+  alarmsState = addOrUpdateAlarm(alarmsState, newAlarm);
 
-  await saveAndSyncAlarms();
-  await loadAlarms(); // Reload and re-render
+  await saveAlarms(alarmsState);
+  await syncChromeAlarms();
+  renderAlarms();
   showMainView();
 });
 
 alarmList.addEventListener('click', async (e) => {
   const target = e.target as HTMLElement;
+  const alarmItem = target.closest('.alarm-item');
+  const id = (alarmItem as HTMLLIElement)?.dataset.id;
+
+  if (!id) return;
 
   // Handle toggle switch
   if (target.classList.contains('toggle-switch')) {
     const input = target as HTMLInputElement;
-    const id = input.dataset.id;
-    const alarm = alarms.find(a => a.id === id);
+    const alarm = alarmsState.find(a => a.id === id);
     if (alarm) {
       alarm.enabled = input.checked;
-      await saveAndSyncAlarms();
+      await saveAlarms(alarmsState);
+      await syncChromeAlarms();
     }
+    return;
   }
 
   // Handle delete button
   if (target.classList.contains('delete-btn')) {
-    const id = target.dataset.id;
-    if (id && confirm('Are you sure you want to delete this alarm?')) {
-        alarms = alarms.filter(a => a.id !== id);
-        await saveAndSyncAlarms();
-        await loadAlarms();
+    if (confirm('Are you sure you want to delete this alarm?')) {
+        alarmsState = deleteAlarm(alarmsState, id);
+        await saveAlarms(alarmsState);
+        await syncChromeAlarms();
+        renderAlarms();
     }
+    return;
   }
 
   // Handle click on item to edit
-  const alarmItem = target.closest('.alarm-item');
-  if (alarmItem && !target.classList.contains('toggle-switch') && !target.classList.contains('delete-btn') && !target.classList.contains('slider')) {
-      const id = (alarmItem as HTMLLIElement).dataset.id;
-      const alarm = alarms.find(a => a.id === id);
+  if (alarmItem && !target.classList.contains('slider')) {
+      const alarm = alarmsState.find(a => a.id === id);
       if (alarm) {
           showEditView(alarm);
       }
