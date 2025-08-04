@@ -18,3 +18,9 @@ dChrono is a modern and sleek alarm clock extension for your browser. It's desig
 4.  Click `Save`.
 5.  You can toggle alarms on and off from the main list.
 6.  Click the `...` button to open the settings panel and change the theme.
+
+---
+
+## Disclosure
+
+Approximately 80% of this project's code was generated with the assistance of AI tools.
