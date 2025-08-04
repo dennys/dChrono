@@ -1,0 +1,26 @@
+{
+  "extName": {
+    "message": "Simple Alarm",
+    "description": "The name of the extension."
+  },
+  "extDesc": {
+    "message": "A simple alarm extension.",
+    "description": "The description of the extension."
+  },
+  "alarmNameLabel": {
+    "message": "Alarm Name:",
+    "description": "Label for the alarm name input."
+  },
+  "alarmTimeLabel": {
+    "message": "Alarm Time:",
+    "description": "Label for the alarm time input."
+  },
+  "setAlarmButton": {
+    "message": "Set Alarm",
+    "description": "Text for the set alarm button."
+  },
+  "activeAlarmsHeading": {
+    "message": "Active Alarms",
+    "description": "Heading for the list of active alarms."
+  }
+}

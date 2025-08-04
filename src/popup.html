@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Alarm</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>__MSG_extName__</h1>
+
+  <div>
+    <label for="alarm-name">__MSG_alarmNameLabel__</label>
+    <input type="text" id="alarm-name" />
+  </div>
+
+  <div>
+    <label for="alarm-time">__MSG_alarmTimeLabel__</label>
+    <input type="datetime-local" id="alarm-time" />
+  </div>
+
+  <button id="set-alarm">__MSG_setAlarmButton__</button>
+
+  <div id="status-message"></div>
+
+  <hr>
+
+  <h2>__MSG_activeAlarmsHeading__</h2>
+  <ul id="alarm-list"></ul>
+
+  <script src="popup.js"></script>
+</body>
+</html>

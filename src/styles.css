@@ -1,0 +1,37 @@
+body {
+  width: 250px;
+  padding: 10px;
+  font-family: sans-serif;
+}
+
+h1 {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+div {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
