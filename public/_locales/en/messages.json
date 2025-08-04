@@ -33,5 +33,21 @@
   "wednesday": { "message": "Wed" },
   "thursday": { "message": "Thu" },
   "friday": { "message": "Fri" },
-  "saturday": { "message": "Sat" }
+  "saturday": { "message": "Sat" },
+  "settings": {
+    "message": "Settings",
+    "description": "Title for the settings page."
+  },
+  "theme": {
+    "message": "Theme",
+    "description": "Label for theme selection."
+  },
+  "dark": {
+    "message": "Dark",
+    "description": "Dark theme option."
+  },
+  "light": {
+    "message": "Light",
+    "description": "Light theme option."
+  }
 }

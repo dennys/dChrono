@@ -33,5 +33,21 @@
   "wednesday": { "message": "三" },
   "thursday": { "message": "四" },
   "friday": { "message": "五" },
-  "saturday": { "message": "六" }
+  "saturday": { "message": "六" },
+  "settings": {
+    "message": "設定",
+    "description": "設定頁面的標題。"
+  },
+  "theme": {
+    "message": "主題",
+    "description": "主題選擇的標籤。"
+  },
+  "dark": {
+    "message": "深色",
+    "description": "深色主題選項。"
+  },
+  "light": {
+    "message": "淺色",
+    "description": "淺色主題選項。"
+  }
 }
