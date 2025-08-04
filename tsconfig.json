@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "lib": [
       "dom",
-      "es6"
+      "es2022"
     ]
   },
   "include": [
