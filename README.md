@@ -1,5 +1,7 @@
 # dChrono - Alarm Clock Extension
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/833f93b3f2ac4059ac490fd9cc9c33c8)](https://app.codacy.com/gh/dennys/dChrono?utm_source=github.com&utm_medium=referral&utm_content=dennys/dChrono&utm_campaign=Badge_Grade)
+
 dChrono is a modern and sleek alarm clock extension for your browser. It's designed to be simple, intuitive, and highly customizable.
 
 ## Features
