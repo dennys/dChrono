@@ -24,6 +24,12 @@ jobs:
     - name: Build
       run: npm run build
 
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: dennys/dChrono
+      
   codeql:
     name: CodeQL
     runs-on: ubuntu-latest
