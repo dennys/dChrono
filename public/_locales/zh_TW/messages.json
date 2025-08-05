@@ -77,5 +77,9 @@
   "editAlarm": {
     "message": "編輯鬧鐘",
     "description": "編輯鬧鐘頁面的標題。"
+  },
+  "system": {
+    "message": "系統",
+    "description": "系統主題選項。"
   }
 }

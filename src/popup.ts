@@ -146,7 +146,12 @@ const renderAlarms = () => {
  * @param {string} theme - The theme to apply ('dark' or 'light').
  */
 const applyTheme = (theme: string) => {
-    document.body.classList.toggle('light-theme', theme === 'light');
+    if (theme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.body.classList.toggle('light-theme', systemTheme === 'light');
+    } else {
+        document.body.classList.toggle('light-theme', theme === 'light');
+    }
     const themeInput = document.querySelector(`#theme-selector input[value=${theme}]`) as HTMLInputElement;
     if (themeInput) {
         themeInput.checked = true;
@@ -170,6 +175,13 @@ const loadTheme = async () => {
 };
 
 // --- Event Listeners ---
+
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', async () => {
+    const theme = await loadThemeFromStorage();
+    if (theme === 'system') {
+        applyTheme('system');
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   localizeHtml();
