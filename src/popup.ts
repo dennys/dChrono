@@ -104,9 +104,15 @@ const showEditView = (alarm: Alarm | null) => {
  * Renders the list of alarms.
  */
 const renderAlarms = () => {
-  alarmList.innerHTML = '';
+  // Clear existing alarms
+  while (alarmList.firstChild) {
+    alarmList.removeChild(alarmList.firstChild);
+  }
+
   if (alarmsState.length === 0) {
-    alarmList.innerHTML = '<li>No alarms set.</li>';
+    const noAlarmsItem = document.createElement('li');
+    noAlarmsItem.textContent = 'No alarms set.';
+    alarmList.appendChild(noAlarmsItem);
     return;
   }
 
@@ -117,25 +123,61 @@ const renderAlarms = () => {
     listItem.className = 'alarm-item';
     listItem.dataset.id = alarm.id;
 
+    const alarmItemLeft = document.createElement('div');
+    alarmItemLeft.className = 'alarm-item-left';
+
+    const alarmTime = document.createElement('div');
+    alarmTime.className = 'alarm-time';
+    alarmTime.textContent = alarm.time;
+
+    const alarmName = document.createElement('div');
+    alarmName.className = 'alarm-name';
+    alarmName.textContent = alarm.name || '';
+
+    const alarmDescription = document.createElement('div');
+    alarmDescription.className = 'alarm-description';
+    alarmDescription.textContent = alarm.description || '';
+
     const daysText = alarm.days.length > 0
       ? alarm.days.map(d => chrome.i18n.getMessage(weekdayMap[d])).join(', ')
       : 'Once';
+    const alarmDays = document.createElement('div');
+    alarmDays.className = 'alarm-days';
+    alarmDays.textContent = daysText;
 
-    listItem.innerHTML = `
-      <div class="alarm-item-left">
-        <div class="alarm-time">${alarm.time}</div>
-        <div class="alarm-name">${alarm.name || ''}</div>
-        <div class="alarm-description">${alarm.description || ''}</div>
-        <div class="alarm-days">${daysText}</div>
-      </div>
-      <div class="alarm-item-right">
-        <button class="delete-btn" data-id="${alarm.id}">🗑️</button>
-        <label class="switch">
-          <input type="checkbox" class="toggle-switch" data-id="${alarm.id}" ${alarm.enabled ? 'checked' : ''}>
-          <span class="slider"></span>
-        </label>
-      </div>
-    `;
+    alarmItemLeft.appendChild(alarmTime);
+    alarmItemLeft.appendChild(alarmName);
+    alarmItemLeft.appendChild(alarmDescription);
+    alarmItemLeft.appendChild(alarmDays);
+
+    const alarmItemRight = document.createElement('div');
+    alarmItemRight.className = 'alarm-item-right';
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.dataset.id = alarm.id;
+    deleteBtn.textContent = '🗑️';
+
+    const switchLabel = document.createElement('label');
+    switchLabel.className = 'switch';
+
+    const toggleSwitch = document.createElement('input');
+    toggleSwitch.type = 'checkbox';
+    toggleSwitch.className = 'toggle-switch';
+    toggleSwitch.dataset.id = alarm.id;
+    toggleSwitch.checked = alarm.enabled;
+
+    const sliderSpan = document.createElement('span');
+    sliderSpan.className = 'slider';
+
+    switchLabel.appendChild(toggleSwitch);
+    switchLabel.appendChild(sliderSpan);
+
+    alarmItemRight.appendChild(deleteBtn);
+    alarmItemRight.appendChild(switchLabel);
+
+    listItem.appendChild(alarmItemLeft);
+    listItem.appendChild(alarmItemRight);
 
     alarmList.appendChild(listItem);
   });
