@@ -80,7 +80,7 @@ const showSettingsView = () => {
  * @param {Alarm | null} alarm - The alarm to edit, or null to add a new one.
  */
 const showEditView = (alarm: Alarm | null) => {
-  editViewTitle.textContent = alarm ? 'Edit Alarm' : 'Add Alarm';
+  editViewTitle.textContent = alarm ? chrome.i18n.getMessage('editAlarm') : chrome.i18n.getMessage('addAlarm');
   alarmIdInput.value = alarm ? alarm.id : '';
   alarmTimeInput.value = alarm ? alarm.time : '07:00';
   alarmNameInput.value = alarm ? alarm.name || '' : '';

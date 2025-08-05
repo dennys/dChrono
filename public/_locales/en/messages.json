@@ -73,5 +73,9 @@
   "defaultAlarmMessage": {
     "message": "It's time for your alarm!",
     "description": "Default alarm message."
+  },
+  "editAlarm": {
+    "message": "Edit Alarm",
+    "description": "Title for the edit alarm page."
   }
 }

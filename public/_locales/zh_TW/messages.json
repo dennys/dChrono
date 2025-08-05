@@ -73,5 +73,9 @@
   "defaultAlarmMessage": {
     "message": "你的鬧鐘響了！",
     "description": "預設鬧鐘訊息。"
+  },
+  "editAlarm": {
+    "message": "編輯鬧鐘",
+    "description": "編輯鬧鐘頁面的標題。"
   }
 }
