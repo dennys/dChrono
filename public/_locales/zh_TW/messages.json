@@ -49,5 +49,29 @@
   "light": {
     "message": "淺色",
     "description": "淺色主題選項。"
+  },
+  "name": {
+    "message": "名稱",
+    "description": "鬧鐘名稱輸入欄的標籤。"
+  },
+  "description": {
+    "message": "描述",
+    "description": "鬧鐘描述輸入欄的標籤。"
+  },
+  "alarmNamePlaceholder": {
+    "message": "鬧鐘名稱",
+    "description": "鬧鐘名稱輸入欄的預留位置文字。"
+  },
+  "alarmDescriptionPlaceholder": {
+    "message": "鬧鐘描述",
+    "description": "鬧鐘描述輸入欄的預留位置文字。"
+  },
+  "alarm": {
+    "message": "鬧鐘",
+    "description": "預設鬧鐘標題。"
+  },
+  "defaultAlarmMessage": {
+    "message": "你的鬧鐘響了！",
+    "description": "預設鬧鐘訊息。"
   }
 }

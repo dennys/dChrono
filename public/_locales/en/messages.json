@@ -49,5 +49,29 @@
   "light": {
     "message": "Light",
     "description": "Light theme option."
+  },
+  "name": {
+    "message": "Name",
+    "description": "Label for alarm name input."
+  },
+  "description": {
+    "message": "Description",
+    "description": "Label for alarm description input."
+  },
+  "alarmNamePlaceholder": {
+    "message": "Alarm Name",
+    "description": "Placeholder for alarm name input."
+  },
+  "alarmDescriptionPlaceholder": {
+    "message": "Alarm Description",
+    "description": "Placeholder for alarm description input."
+  },
+  "alarm": {
+    "message": "Alarm",
+    "description": "Default alarm title."
+  },
+  "defaultAlarmMessage": {
+    "message": "It's time for your alarm!",
+    "description": "Default alarm message."
   }
 }
