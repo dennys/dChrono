@@ -13,6 +13,7 @@ chrome.alarms.onAlarm.addListener((alarm: chrome.alarms.Alarm) => {
 
     const notificationOptions = {
       type: 'basic' as const,
+      priority: 2,
       iconUrl: chrome.runtime.getURL('src/icons/icon128.png'),
       title: triggeredAlarm?.name || chrome.i18n.getMessage('alarm'),
       message: triggeredAlarm?.description || chrome.i18n.getMessage('defaultAlarmMessage'),
