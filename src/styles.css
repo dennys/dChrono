@@ -8,7 +8,7 @@
 }
 
 body {
-  width: 320px;
+  width: 380px;
   margin: 0;
   background-color: var(--background-color);
   color: var(--on-surface-color);
@@ -202,10 +202,15 @@ input:checked + .slider:before {
 
 .weekdays {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 4px; /* Add small gap between buttons */
-  padding: 0 4px; /* Small padding on sides */
+  justify-content: space-around;
+  /* Distribute buttons evenly */
+  align-items: center;
+  flex-wrap: nowrap;
+  /* Keep all buttons on one line */
+  gap: 2px;
+  /* Small gap between buttons */
+  padding: 0 4px;
+  /* Small padding on sides */
 }
 
 .weekday {
@@ -213,24 +218,66 @@ input:checked + .slider:before {
   border: 1px solid var(--disabled-color);
   color: var(--on-surface-color);
   border-radius: 50%;
-  aspect-ratio: 1; /* Keep circular */
-  width: 12px;
-  height: 12px;
+  width: 36px;
+  /* Fixed width for perfect circles */
+  height: 36px;
+  /* Fixed height for perfect circles */
   cursor: pointer;
   box-sizing: border-box;
-  transition: background-color 0.2s, border-color 0.2s;
-  min-width: 0;
-  flex: 1; /* Each button takes equal space */
-  font-size: 0.7em;
+  transition: all 0.2s ease;
+  /* Smooth transition for all properties */
+  font-size: 0.75em;
+  /* Slightly larger font */
+  font-weight: 500;
+  /* Medium weight for better readability */
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  /* Prevent shrinking */
+}
+
+.weekday:hover {
+  background-color: var(--disabled-color);
+  border-color: var(--on-surface-color);
 }
 
 .weekday.active {
   background-color: var(--primary-color);
   color: var(--on-primary-color);
-  border: 2px solid var(--on-surface-color);
+  border: 2px solid var(--primary-color);
+  font-weight: 600;
+  /* Bolder font for selected state */
+  transform: scale(1.1);
+  /* Slightly larger when selected */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  /* Add shadow for depth */
+}
+
+/* Dark theme specific adjustments */
+body:not(.light-theme) .weekday.active {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  /* Use dark background color for maximum contrast */
+  border: 2px solid #ffffff;
+  /* White border for extra visibility */
+  box-shadow: 0 0 0 1px var(--primary-color), 0 2px 12px rgba(138, 180, 248, 0.4);
+  /* Glowing effect */
+}
+
+body:not(.light-theme) .weekday:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Light theme specific adjustments */
+body.light-theme .weekday:hover {
+  background-color: var(--disabled-color);
+}
+
+body.light-theme .weekday.active {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  /* Lighter shadow for light theme */
 }
 
 #edit-view .footer {
@@ -295,8 +342,4 @@ body.light-theme {
 
 body.light-theme .icon-btn:hover {
   background-color: rgba(0, 0, 0, 0.1);
-}
-
-body.light-theme .weekday.active {
-    border-color: var(--on-surface-color);
 }
