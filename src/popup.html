@@ -23,10 +23,18 @@
 
   <div id="edit-view" class="hidden">
     <div class="header">
-      <h1 id="edit-view-title">Add Alarm</h1>
+      <h1 id="edit-view-title">__MSG_addAlarm__</h1>
     </div>
     <div class="edit-form">
       <input type="hidden" id="alarm-id">
+      <div class="form-group">
+        <label for="alarm-name">__MSG_name__</label>
+        <input type="text" id="alarm-name" placeholder="__MSG_alarmNamePlaceholder__">
+      </div>
+      <div class="form-group">
+        <label for="alarm-description">__MSG_description__</label>
+        <input type="text" id="alarm-description" placeholder="__MSG_alarmDescriptionPlaceholder__">
+      </div>
       <div class="form-group">
         <label for="alarm-time">__MSG_time__</label>
         <input type="time" id="alarm-time" required>
@@ -59,7 +67,9 @@
       <div class="form-group">
         <label>__MSG_theme__</label>
         <div id="theme-selector">
-            <input type="radio" id="theme-dark" name="theme" value="dark" checked>
+            <input type="radio" id="theme-system" name="theme" value="system" checked>
+            <label for="theme-system">__MSG_system__</label>
+            <input type="radio" id="theme-dark" name="theme" value="dark">
             <label for="theme-dark">__MSG_dark__</label>
             <input type="radio" id="theme-light" name="theme" value="light">
             <label for="theme-light">__MSG_light__</label>

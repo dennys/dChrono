@@ -190,6 +190,8 @@ input:checked + .slider:before {
   color: var(--disabled-color);
 }
 
+#alarm-name,
+#alarm-description,
 #alarm-time {
   width: 100%;
   background-color: var(--surface-color);

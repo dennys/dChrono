@@ -13,6 +13,8 @@ const saveBtn = document.getElementById('save-btn') as HTMLButtonElement;
 const editViewTitle = document.getElementById('edit-view-title') as HTMLHeadingElement;
 const alarmIdInput = document.getElementById('alarm-id') as HTMLInputElement;
 const alarmTimeInput = document.getElementById('alarm-time') as HTMLInputElement;
+const alarmNameInput = document.getElementById('alarm-name') as HTMLInputElement;
+const alarmDescriptionInput = document.getElementById('alarm-description') as HTMLInputElement;
 const weekdayButtons = document.querySelectorAll('.weekday') as NodeListOf<HTMLButtonElement>;
 const settingsBtn = document.getElementById('settings-btn') as HTMLButtonElement;
 const backToMainBtn = document.getElementById('back-to-main-btn') as HTMLButtonElement;
@@ -20,7 +22,7 @@ const themeSelector = document.getElementById('theme-selector') as HTMLDivElemen
 
 // --- App State ---
 let alarmsState: Alarm[] = [];
-const weekdayMap = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const weekdayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 // --- Functions ---
 
@@ -78,9 +80,11 @@ const showSettingsView = () => {
  * @param {Alarm | null} alarm - The alarm to edit, or null to add a new one.
  */
 const showEditView = (alarm: Alarm | null) => {
-  editViewTitle.textContent = alarm ? 'Edit Alarm' : 'Add Alarm';
+  editViewTitle.textContent = alarm ? chrome.i18n.getMessage('editAlarm') : chrome.i18n.getMessage('addAlarm');
   alarmIdInput.value = alarm ? alarm.id : '';
   alarmTimeInput.value = alarm ? alarm.time : '07:00';
+  alarmNameInput.value = alarm ? alarm.name || '' : '';
+  alarmDescriptionInput.value = alarm ? alarm.description || '' : '';
 
   // Reset and set active weekdays
   weekdayButtons.forEach(btn => {
@@ -114,12 +118,14 @@ const renderAlarms = () => {
     listItem.dataset.id = alarm.id;
 
     const daysText = alarm.days.length > 0
-      ? alarm.days.map(d => weekdayMap[d]).join(', ')
+      ? alarm.days.map(d => chrome.i18n.getMessage(weekdayMap[d])).join(', ')
       : 'Once';
 
     listItem.innerHTML = `
       <div class="alarm-item-left">
         <div class="alarm-time">${alarm.time}</div>
+        <div class="alarm-name">${alarm.name || ''}</div>
+        <div class="alarm-description">${alarm.description || ''}</div>
         <div class="alarm-days">${daysText}</div>
       </div>
       <div class="alarm-item-right">
@@ -140,7 +146,12 @@ const renderAlarms = () => {
  * @param {string} theme - The theme to apply ('dark' or 'light').
  */
 const applyTheme = (theme: string) => {
-    document.body.classList.toggle('light-theme', theme === 'light');
+    if (theme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        document.body.classList.toggle('light-theme', systemTheme === 'light');
+    } else {
+        document.body.classList.toggle('light-theme', theme === 'light');
+    }
     const themeInput = document.querySelector(`#theme-selector input[value=${theme}]`) as HTMLInputElement;
     if (themeInput) {
         themeInput.checked = true;
@@ -164,6 +175,13 @@ const loadTheme = async () => {
 };
 
 // --- Event Listeners ---
+
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', async () => {
+    const theme = await loadThemeFromStorage();
+    if (theme === 'system') {
+        applyTheme('system');
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   localizeHtml();
@@ -206,8 +224,10 @@ saveBtn.addEventListener('click', async () => {
   const days = Array.from(weekdayButtons)
     .filter(btn => btn.classList.contains('active'))
     .map(btn => parseInt(btn.dataset.day || '0', 10));
+  const name = alarmNameInput.value;
+  const description = alarmDescriptionInput.value;
 
-  const newAlarm: Alarm = { id, time, days, enabled: true };
+  const newAlarm: Alarm = { id, time, days, enabled: true, name, description };
 
   alarmsState = addOrUpdateAlarm(alarmsState, newAlarm);
 
