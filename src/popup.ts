@@ -203,7 +203,7 @@ const applyTheme = (theme: string) => {
 /**
  * Loads alarms from storage, updates state, and re-renders the list.
  */
-const refreshAlarms = async () => {
+export const refreshAlarms = async () => {
     alarmsState = await loadAlarmsFromStorage();
     renderAlarms();
 };
