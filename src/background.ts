@@ -1,4 +1,3 @@
-import type { Alarm } from './lib/types';
 import { loadAlarms, saveAlarms } from './lib/storage';
 
 // Listen for alarm events
