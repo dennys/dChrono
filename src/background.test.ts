@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import type { Alarm } from './lib/types';
 
-type AlarmListener = (alarm: chrome.alarms.Alarm) => void;
+type AlarmListener = (alarm: chrome.alarms.Alarm) => Promise<void>;
 
 describe('Background Script', () => {
   let onAlarmListener: AlarmListener;
@@ -19,6 +19,8 @@ describe('Background Script', () => {
 
     // Capture the listener function
     onAlarmListener = addListenerSpy.mock.calls[0][0];
+
+    vi.mocked(chrome.notifications.create).mockResolvedValue('notification-id');
   });
 
   it('should register an onAlarm listener', () => {
@@ -38,15 +40,10 @@ describe('Background Script', () => {
     };
 
     // Setup mock for chrome.storage.local.get to return the alarm
-    vi.mocked(chrome.storage.local.get).mockImplementation((_keys, callback) => {
-      callback({ alarms: [mockRecurringAlarm] });
-    });
+    vi.mocked(chrome.storage.local.get).mockResolvedValue({ alarms: [mockRecurringAlarm] });
 
     // Trigger the alarm listener
-    onAlarmListener(mockChromeAlarm);
-
-    // Wait for async operations within the listener to complete
-    await vi.dynamicImportSettled();
+    await onAlarmListener(mockChromeAlarm);
 
     // Verify notification was created with correct details
     expect(chrome.notifications.create).toHaveBeenCalledOnce();
@@ -55,8 +52,7 @@ describe('Background Script', () => {
       expect.objectContaining({
         title: mockRecurringAlarm.name,
         message: mockRecurringAlarm.description,
-      }),
-      expect.any(Function) // The callback function
+      })
     );
 
     // Verify storage.local.set was NOT called
@@ -74,12 +70,9 @@ describe('Background Script', () => {
       enabled: true,
     };
 
-    vi.mocked(chrome.storage.local.get).mockImplementation((_keys, callback) => {
-      callback({ alarms: [mockNonRecurringAlarm] });
-    });
+    vi.mocked(chrome.storage.local.get).mockResolvedValue({ alarms: [mockNonRecurringAlarm] });
 
-    onAlarmListener(mockChromeAlarm);
-    await vi.dynamicImportSettled();
+    await onAlarmListener(mockChromeAlarm);
 
     expect(chrome.notifications.create).toHaveBeenCalledOnce();
 
@@ -94,12 +87,9 @@ describe('Background Script', () => {
     const mockChromeAlarm = { name: 'alarm3', scheduledTime: Date.now() };
 
     // Setup mock for chrome.storage.local.get to return no alarms
-    vi.mocked(chrome.storage.local.get).mockImplementation((_keys, callback) => {
-      callback({ alarms: [] });
-    });
+    vi.mocked(chrome.storage.local.get).mockResolvedValue({ alarms: [] });
 
-    onAlarmListener(mockChromeAlarm);
-    await vi.dynamicImportSettled();
+    await onAlarmListener(mockChromeAlarm);
 
     // Verify notification was created with default details
     expect(chrome.notifications.create).toHaveBeenCalledOnce();
@@ -108,8 +98,7 @@ describe('Background Script', () => {
       expect.objectContaining({
         title: 'alarm', // from i18n mock
         message: 'defaultAlarmMessage', // from i18n mock
-      }),
-      expect.any(Function)
+      })
     );
   });
 });
