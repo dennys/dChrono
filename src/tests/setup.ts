@@ -43,8 +43,35 @@ const mockNotifications = {
 };
 
 const mockRuntime = {
-  getURL: (path: string) => path,
+  getURL: (path: string) => `chrome-extension://test-id/${path}`,
   lastError: undefined,
+  onMessage: {
+    addListener: vi.fn(),
+  },
+  sendMessage: vi.fn((message, callback) => {
+    if (callback) {
+      callback({ success: true });
+    }
+    return Promise.resolve({ success: true });
+  }),
+};
+
+const mockWindows = {
+  create: vi.fn(),
+};
+
+const mockSystem = {
+  display: {
+    getInfo: vi.fn().mockResolvedValue([
+      {
+        isPrimary: true,
+        workArea: {
+          width: 1920,
+          height: 1080,
+        },
+      },
+    ]),
+  },
 };
 
 // Mock the global chrome object
@@ -54,6 +81,8 @@ const chromeMock = {
   i18n: mockI18n,
   notifications: mockNotifications,
   runtime: mockRuntime,
+  windows: mockWindows,
+  system: mockSystem,
 };
 
 // Assign the mock to the global object

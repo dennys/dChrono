@@ -6,7 +6,7 @@
   "permissions": [
     "alarms",
     "storage",
-    "notifications"
+    "system.display"
   ],
   "action": {
     "default_popup": "src/popup.html",
@@ -28,6 +28,7 @@
   "web_accessible_resources": [
     {
       "resources": [
+        "src/alarm.html",
         "src/icons/icon16.png",
         "src/icons/icon48.png",
         "src/icons/icon128.png"
