@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>dChrono</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <div id="main-view">
+<div id="main-view" class="view">
     <div class="header">
       <h1>dChrono</h1>
       <button id="settings-btn" class="icon-btn">...</button>
@@ -21,7 +24,7 @@
     </div>
   </div>
 
-  <div id="edit-view" class="hidden">
+  <div id="edit-view" class="view hidden">
     <div class="header">
       <h1 id="edit-view-title">__MSG_addAlarm__</h1>
     </div>
@@ -58,7 +61,7 @@
     </div>
   </div>
 
-  <div id="settings-view" class="hidden">
+  <div id="settings-view" class="view hidden">
     <div class="header">
       <button id="back-to-main-btn" class="icon-btn">&lt;</button>
       <h1>__MSG_settings__</h1>
