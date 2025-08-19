@@ -1,5 +1,24 @@
 import type { Alarm } from './types';
 
+export const convert12hTo24h = (time12h: string): string => {
+  const [time, modifier] = time12h.split(' ');
+  // If there's no modifier, we assume it's already in 24h format or invalid.
+  // The timepicker in 12h mode should always include AM/PM.
+  if (!modifier) return time12h;
+
+  const [hours, minutes] = time.split(':');
+  let hoursNum = parseInt(hours, 10);
+
+  if (modifier.toUpperCase() === 'PM' && hoursNum < 12) {
+    hoursNum += 12;
+  }
+  if (modifier.toUpperCase() === 'AM' && hoursNum === 12) {
+    hoursNum = 0; // Midnight case
+  }
+
+  return `${String(hoursNum).padStart(2, '0')}:${minutes}`;
+}
+
 /**
  * Calculates the timestamp for the next occurrence of a given alarm.
  *

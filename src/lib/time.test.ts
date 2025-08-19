@@ -1,6 +1,33 @@
 import { describe, it, expect } from 'vitest';
-import { calculateNextAlarmOccurrences } from './time';
+import { calculateNextAlarmOccurrences, convert12hTo24h } from './time';
 import type { Alarm } from './types';
+
+describe('convert12hTo24h', () => {
+  it('should convert PM times correctly', () => {
+    expect(convert12hTo24h('1:00 PM')).toBe('13:00');
+    expect(convert12hTo24h('11:59 PM')).toBe('23:59');
+  });
+
+  it('should handle 12:00 PM correctly', () => {
+    expect(convert12hTo24h('12:00 PM')).toBe('12:00');
+    expect(convert12hTo24h('12:30 PM')).toBe('12:30');
+  });
+
+  it('should convert AM times correctly', () => {
+    expect(convert12hTo24h('1:00 AM')).toBe('01:00');
+    expect(convert12hTo24h('11:59 AM')).toBe('11:59');
+  });
+
+  it('should handle 12:00 AM (midnight) correctly', () => {
+    expect(convert12hTo24h('12:00 AM')).toBe('00:00');
+    expect(convert12hTo24h('12:30 AM')).toBe('00:30');
+  });
+
+  it('should return the original string if no AM/PM modifier is present', () => {
+    expect(convert12hTo24h('14:00')).toBe('14:00');
+    expect(convert12hTo24h('09:30')).toBe('09:30');
+  });
+});
 
 describe('calculateNextAlarmOccurrences', () => {
   // Test date: Wednesday, June 12, 2024 10:00:00 AM

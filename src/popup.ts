@@ -1,9 +1,11 @@
 import { TimepickerUI } from 'timepicker-ui';
 import 'timepicker-ui/main.css';
+import 'timepicker-ui/index.css';
 import 'timepicker-ui/theme-dark.css';
 import type { Alarm } from './lib/types';
 import { loadAlarms as loadAlarmsFromStorage, saveAlarms, saveTheme, loadTheme as loadThemeFromStorage } from './lib/storage';
 import { sortAlarms, addOrUpdateAlarm, deleteAlarm, syncChromeAlarms, toggleAlarmEnabled } from './lib/alarms';
+import { convert12hTo24h } from './lib/time';
 
 // --- DOM Elements ---
 const mainView = document.getElementById('main-view') as HTMLDivElement;
@@ -26,6 +28,22 @@ const themeSelector = document.getElementById('theme-selector') as HTMLDivElemen
 // --- App State ---
 let alarmsState: Alarm[] = [];
 const weekdayMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+let timepicker: TimepickerUI | null = null;
+
+
+const createTimepicker = () => {
+    if (timepicker) {
+        timepicker.destroy();
+    }
+    const isLightTheme = document.body.classList.contains('light-theme');
+    const timepickerTheme = isLightTheme ? 'basic' : 'dark';
+
+    timepicker = new TimepickerUI(alarmTimeInput, {
+        clockType: '12h',
+        theme: timepickerTheme,
+    });
+    timepicker.create();
+}
 
 // --- Functions ---
 
@@ -233,20 +251,16 @@ window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', as
     const theme = await loadThemeFromStorage();
     if (theme === 'system') {
         applyTheme('system');
+        createTimepicker();
     }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   localizeHtml();
-  refreshAlarms();
-  loadTheme();
+  await refreshAlarms();
+  await loadTheme();
   showMainView();
-
-  const timepicker = new TimepickerUI(alarmTimeInput, {
-    clockType: '24h',
-    theme: 'dark',
-  });
-  timepicker.create();
+  createTimepicker();
 });
 
 addAlarmBtn.addEventListener('click', () => {
@@ -265,6 +279,7 @@ themeSelector.addEventListener('change', async (e) => {
     const newTheme = (e.target as HTMLInputElement).value;
     applyTheme(newTheme);
     await saveTheme(newTheme);
+    createTimepicker();
 });
 
 cancelBtn.addEventListener('click', () => {
@@ -279,7 +294,7 @@ weekdayButtons.forEach(btn => {
 
 saveBtn.addEventListener('click', async () => {
   const id = alarmIdInput.value || `alarm_${Date.now()}`;
-  const time = alarmTimeInput.value;
+  const time = convert12hTo24h(alarmTimeInput.value);
   const days = Array.from(weekdayButtons)
     .filter(btn => btn.classList.contains('active'))
     .map(btn => parseInt(btn.dataset.day || '0', 10));
