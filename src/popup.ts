@@ -1,3 +1,6 @@
+import { TimepickerUI } from 'timepicker-ui';
+import 'timepicker-ui/main.css';
+import 'timepicker-ui/theme-dark.css';
 import type { Alarm } from './lib/types';
 import { loadAlarms as loadAlarmsFromStorage, saveAlarms, saveTheme, loadTheme as loadThemeFromStorage } from './lib/storage';
 import { sortAlarms, addOrUpdateAlarm, deleteAlarm, syncChromeAlarms, toggleAlarmEnabled } from './lib/alarms';
@@ -238,6 +241,12 @@ document.addEventListener('DOMContentLoaded', () => {
   refreshAlarms();
   loadTheme();
   showMainView();
+
+  const timepicker = new TimepickerUI(alarmTimeInput, {
+    clockType: '24h',
+    theme: 'dark',
+  });
+  timepicker.create();
 });
 
 addAlarmBtn.addEventListener('click', () => {
