@@ -101,5 +101,9 @@
   "deleteConfirm": {
     "message": "Are you sure you want to delete this alarm?",
     "description": "Confirmation message for deleting an alarm."
+  },
+  "timeIsRequired": {
+    "message": "Please select a time for the alarm.",
+    "description": "Error message when the time input is empty."
   }
 }

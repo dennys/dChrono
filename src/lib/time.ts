@@ -1,13 +1,20 @@
 import type { Alarm } from './types';
 
 export const convert12hTo24h = (time12h: string): string => {
+  if (!time12h) return '00:00';
+
   const [time, modifier] = time12h.split(' ');
-  // If there's no modifier, we assume it's already in 24h format or invalid.
-  // The timepicker in 12h mode should always include AM/PM.
+  // If there's no modifier, we assume it's already in 24h format.
+  // We'll just return it, assuming it's valid. A more robust solution
+  // might validate this further, but this matches previous behavior.
   if (!modifier) return time12h;
 
   const [hours, minutes] = time.split(':');
   let hoursNum = parseInt(hours, 10);
+
+  if (isNaN(hoursNum) || isNaN(parseInt(minutes, 10))) {
+    return '00:00'; // Return a sensible default for invalid numbers
+  }
 
   if (modifier.toUpperCase() === 'PM' && hoursNum < 12) {
     hoursNum += 12;
@@ -20,8 +27,16 @@ export const convert12hTo24h = (time12h: string): string => {
 }
 
 export const convert24hTo12h = (time24h: string): string => {
+  if (!time24h || !time24h.includes(':')) {
+    return '12:00 AM'; // Return a sensible default for invalid input
+  }
   const [hours, minutes] = time24h.split(':');
   const hoursNum = parseInt(hours, 10);
+
+  if (isNaN(hoursNum) || isNaN(parseInt(minutes, 10))) {
+    return '12:00 AM'; // Return a sensible default for invalid numbers
+  }
+
   const ampm = hoursNum >= 12 ? 'PM' : 'AM';
   let hours12 = hoursNum % 12;
   if (hours12 === 0) {

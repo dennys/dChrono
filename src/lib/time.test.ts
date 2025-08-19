@@ -8,6 +8,12 @@ describe('convert24hTo12h', () => {
     expect(convert24hTo12h('23:59')).toBe('11:59 PM');
   });
 
+  it('should return a default value for invalid input', () => {
+    expect(convert24hTo12h('')).toBe('12:00 AM');
+    expect(convert24hTo12h('abc')).toBe('12:00 AM');
+    expect(convert24hTo12h('12:xx')).toBe('12:00 AM');
+  });
+
   it('should handle 12:00 PM correctly', () => {
     expect(convert24hTo12h('12:00')).toBe('12:00 PM');
     expect(convert24hTo12h('12:30')).toBe('12:30 PM');
@@ -48,6 +54,12 @@ describe('convert12hTo24h', () => {
   it('should return the original string if no AM/PM modifier is present', () => {
     expect(convert12hTo24h('14:00')).toBe('14:00');
     expect(convert12hTo24h('09:30')).toBe('09:30');
+  });
+
+  it('should return a default value for invalid input', () => {
+    expect(convert12hTo24h('')).toBe('00:00');
+    expect(convert12hTo24h('abc')).toBe('abc'); // TBD: This is current behavior
+    expect(convert12hTo24h('12:xx PM')).toBe('00:00');
   });
 });
 

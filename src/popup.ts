@@ -293,8 +293,14 @@ weekdayButtons.forEach(btn => {
 });
 
 saveBtn.addEventListener('click', async () => {
+  const timeValue = alarmTimeInput.value;
+  if (!timeValue) {
+    alert(chrome.i18n.getMessage('timeIsRequired'));
+    return;
+  }
+
   const id = alarmIdInput.value || `alarm_${Date.now()}`;
-  const time = convert12hTo24h(alarmTimeInput.value);
+  const time = convert12hTo24h(timeValue);
   const days = Array.from(weekdayButtons)
     .filter(btn => btn.classList.contains('active'))
     .map(btn => parseInt(btn.dataset.day || '0', 10));
