@@ -81,5 +81,25 @@
   "system": {
     "message": "系統",
     "description": "系統主題選項。"
+  },
+  "alarmRinging": {
+    "message": "鬧鐘響鈴",
+    "description": "鬧鐘響鈴頁面的標題。"
+  },
+  "snooze": {
+    "message": "貪睡 (5 分鐘)",
+    "description": "貪睡鬧鐘的按鈕文字。"
+  },
+  "closeBtn": {
+    "message": "關閉",
+    "description": "關閉視窗的按鈕文字。"
+  },
+  "once": {
+    "message": "一次",
+    "description": "非重複鬧鐘的標籤。"
+  },
+  "deleteConfirm": {
+    "message": "您確定要刪除此鬧鐘嗎？",
+    "description": "刪除鬧鐘的確認訊息。"
   }
 }
