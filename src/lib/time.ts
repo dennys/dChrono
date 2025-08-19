@@ -19,6 +19,17 @@ export const convert12hTo24h = (time12h: string): string => {
   return `${String(hoursNum).padStart(2, '0')}:${minutes}`;
 }
 
+export const convert24hTo12h = (time24h: string): string => {
+  const [hours, minutes] = time24h.split(':');
+  const hoursNum = parseInt(hours, 10);
+  const ampm = hoursNum >= 12 ? 'PM' : 'AM';
+  let hours12 = hoursNum % 12;
+  if (hours12 === 0) {
+    hours12 = 12; // 0 should be 12 in 12h format
+  }
+  return `${hours12}:${minutes} ${ampm}`;
+}
+
 /**
  * Calculates the timestamp for the next occurrence of a given alarm.
  *

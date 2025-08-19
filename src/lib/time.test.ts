@@ -1,6 +1,28 @@
 import { describe, it, expect } from 'vitest';
-import { calculateNextAlarmOccurrences, convert12hTo24h } from './time';
+import { calculateNextAlarmOccurrences, convert12hTo24h, convert24hTo12h } from './time';
 import type { Alarm } from './types';
+
+describe('convert24hTo12h', () => {
+  it('should convert 24h PM times to 12h format', () => {
+    expect(convert24hTo12h('13:00')).toBe('1:00 PM');
+    expect(convert24hTo12h('23:59')).toBe('11:59 PM');
+  });
+
+  it('should handle 12:00 PM correctly', () => {
+    expect(convert24hTo12h('12:00')).toBe('12:00 PM');
+    expect(convert24hTo12h('12:30')).toBe('12:30 PM');
+  });
+
+  it('should convert 24h AM times to 12h format', () => {
+    expect(convert24hTo12h('01:00')).toBe('1:00 AM');
+    expect(convert24hTo12h('11:59')).toBe('11:59 AM');
+  });
+
+  it('should handle 00:00 (midnight) correctly', () => {
+    expect(convert24hTo12h('00:00')).toBe('12:00 AM');
+    expect(convert24hTo12h('00:30')).toBe('12:30 AM');
+  });
+});
 
 describe('convert12hTo24h', () => {
   it('should convert PM times correctly', () => {

@@ -5,7 +5,7 @@ import 'timepicker-ui/theme-dark.css';
 import type { Alarm } from './lib/types';
 import { loadAlarms as loadAlarmsFromStorage, saveAlarms, saveTheme, loadTheme as loadThemeFromStorage } from './lib/storage';
 import { sortAlarms, addOrUpdateAlarm, deleteAlarm, syncChromeAlarms, toggleAlarmEnabled } from './lib/alarms';
-import { convert12hTo24h } from './lib/time';
+import { convert12hTo24h, convert24hTo12h } from './lib/time';
 
 // --- DOM Elements ---
 const mainView = document.getElementById('main-view') as HTMLDivElement;
@@ -112,7 +112,7 @@ const showSettingsView = () => {
 const showEditView = (alarm: Alarm | null) => {
   editViewTitle.textContent = alarm ? chrome.i18n.getMessage('editAlarm') : chrome.i18n.getMessage('addAlarm');
   alarmIdInput.value = alarm ? alarm.id : '';
-  alarmTimeInput.value = alarm ? alarm.time : '07:00';
+  alarmTimeInput.value = alarm ? convert24hTo12h(alarm.time) : '7:00 AM';
   alarmNameInput.value = alarm ? alarm.name || '' : '';
   alarmDescriptionInput.value = alarm ? alarm.description || '' : '';
 
