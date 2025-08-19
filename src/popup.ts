@@ -112,7 +112,12 @@ const showSettingsView = () => {
 const showEditView = (alarm: Alarm | null) => {
   editViewTitle.textContent = alarm ? chrome.i18n.getMessage('editAlarm') : chrome.i18n.getMessage('addAlarm');
   alarmIdInput.value = alarm ? alarm.id : '';
-  alarmTimeInput.value = alarm ? convert24hTo12h(alarm.time) : '7:00 AM';
+  const time12h = alarm ? convert24hTo12h(alarm.time) : '7:00 AM';
+  if (timepicker) {
+    timepicker.setValue(time12h);
+  } else {
+    alarmTimeInput.value = time12h;
+  }
   alarmNameInput.value = alarm ? alarm.name || '' : '';
   alarmDescriptionInput.value = alarm ? alarm.description || '' : '';
 
