@@ -446,7 +446,25 @@ body.light-theme .icon-btn:hover {
 }
 
 /* Timepicker UI Overrides */
-.timepicker-ui-modal {
-  transform: scale(0.8);
-  transform-origin: center top;
+/* Reduce the size of the hour/minute display in the mobile-style header */
+.timepicker-ui-m-body-header .timepicker-ui-hour,
+.timepicker-ui-m-body-header .timepicker-ui-minutes {
+  font-size: 36px !important; /* Default is large, reduce it */
+  height: 60px !important;
+  width: 90px !important;
+}
+
+.timepicker-ui-m-body-header .timepicker-ui-separator {
+  font-size: 36px !important; /* Match the font size */
+  margin: 0 !important;
+}
+
+/* Adjust AM/PM buttons */
+.timepicker-ui-am-pm-container {
+  margin-top: 10px !important;
+}
+
+.timepicker-ui-am-pm-button {
+  padding: 4px 8px !important;
+  font-size: 14px !important;
 }
