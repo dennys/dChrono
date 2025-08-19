@@ -239,10 +239,6 @@ input:checked + .slider:before {
   border-color: var(--primary-color);
 }
 
-#alarm-time {
-    width: 50%;
-}
-
 .weekdays {
   display: flex;
   justify-content: space-around;
