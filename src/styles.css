@@ -279,15 +279,16 @@ input:checked + .slider:before {
   color: var(--on-primary-color);
   border-color: var(--primary-color);
   font-weight: 700;
-  transform: scale(1.05);
+  transform: scale(1.15); /* Increased scale */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Dark theme specific adjustments */
 body:not(.light-theme) .weekday.active {
-  color: var(--on-primary-color); /* Ensure high contrast text */
-  border: 2px solid #ffffff; /* Bright white border */
-  box-shadow: 0 0 12px rgba(108, 92, 231, 0.9); /* Stronger glow */
+  background-color: var(--on-primary-color); /* Inverted: White background */
+  color: var(--primary-color); /* Inverted: Purple text */
+  border: 2px solid var(--primary-color); /* Purple border */
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5); /* A subtle white glow */
 }
 
 body:not(.light-theme) .weekday:hover:not(.active) {
@@ -302,8 +303,8 @@ body.light-theme .weekday:hover {
 
 body.light-theme .weekday.active {
   color: var(--on-primary-color);
-  border-width: 2px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); /* More prominent shadow */
+  border-width: 3px; /* Thicker border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Even more prominent shadow */
 }
 
 #edit-view .footer {
