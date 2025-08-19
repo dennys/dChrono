@@ -450,3 +450,13 @@ body.light-theme .icon-btn:hover {
   transform: scale(0.8);
   transform-origin: center top;
 }
+
+.timepicker-ui-hour,
+.timepicker-ui-minutes {
+  font-size: 3em !important;
+}
+
+.timepicker-ui-am,
+.timepicker-ui-pm {
+    font-size: 1.2em !important;
+}
