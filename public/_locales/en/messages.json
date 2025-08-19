@@ -81,5 +81,25 @@
   "system": {
     "message": "System",
     "description": "System theme option."
+  },
+  "alarmRinging": {
+    "message": "Alarm Ringing",
+    "description": "Title for the alarm ringing page."
+  },
+  "snooze": {
+    "message": "Snooze (5 min)",
+    "description": "Button text to snooze an alarm."
+  },
+  "closeBtn": {
+    "message": "Close",
+    "description": "Button text to close a window."
+  },
+  "once": {
+    "message": "Once",
+    "description": "Label for a non-repeating alarm."
+  },
+  "deleteConfirm": {
+    "message": "Are you sure you want to delete this alarm?",
+    "description": "Confirmation message for deleting an alarm."
   }
 }

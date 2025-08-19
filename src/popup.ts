@@ -148,7 +148,7 @@ const renderAlarms = () => {
 
     const daysText = alarm.days.length > 0
       ? alarm.days.map(d => chrome.i18n.getMessage(weekdayMap[d])).join(', ')
-      : 'Once';
+      : chrome.i18n.getMessage('once');
     const alarmDays = document.createElement('div');
     alarmDays.className = 'alarm-days';
     alarmDays.textContent = daysText;
@@ -308,7 +308,7 @@ alarmList.addEventListener('click', async (e) => {
 
   // Handle delete button
   if (target.classList.contains('delete-btn')) {
-    if (confirm('Are you sure you want to delete this alarm?')) {
+    if (confirm(chrome.i18n.getMessage('deleteConfirm'))) {
         alarmsState = deleteAlarm(alarmsState, id);
         await saveAlarms(alarmsState);
         await syncChromeAlarms();

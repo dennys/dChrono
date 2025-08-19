@@ -1,3 +1,32 @@
+// --- I18n ---
+const localizeHtml = () => {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+  let node;
+  while (node = walker.nextNode()) {
+    if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
+      const text = node.nodeValue;
+      const newText = text.replace(/__MSG_(\w+)__/g, (match, key) => {
+        return chrome.i18n.getMessage(key) || match;
+      });
+      if (newText !== text) {
+        node.nodeValue = newText;
+      }
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const element = node as HTMLElement;
+      for (let i = 0; i < element.attributes.length; i++) {
+        const attr = element.attributes[i];
+        const text = attr.value;
+        const newText = text.replace(/__MSG_(\w+)__/g, (match, key) => {
+          return chrome.i18n.getMessage(key) || match;
+        });
+        if (newText !== text) {
+          attr.value = newText;
+        }
+      }
+    }
+  }
+}
+
 // --- Theme ---
 const applyTheme = (theme: string) => {
   if (theme === 'system') {
@@ -50,6 +79,7 @@ const handleAlarmInteraction = async () => {
 
 export function setupAlarmPage() {
   loadTheme();
+  localizeHtml();
 
   // --- Alarm Details ---
   const params = new URLSearchParams(window.location.search);

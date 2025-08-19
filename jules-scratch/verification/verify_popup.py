@@ -1,33 +1,33 @@
-from playwright.sync_api import sync_playwright
-import os
+from playwright.sync_api import sync_playwright, expect
 
-def main():
-    with sync_playwright() as p:
-        path_to_extension = os.path.abspath('dist')
-        user_data_dir = '/tmp/test-user-data-dir'
+def run(playwright):
+    browser = playwright.chromium.launch(headless=True)
+    context = browser.new_context()
+    page = context.new_page()
 
-        context = p.chromium.launch_persistent_context(
-            user_data_dir,
-            headless=False,
-            args=[
-                f"--disable-extensions-except={path_to_extension}",
-                f"--load-extension={path_to_extension}",
-            ],
-        )
+    page.goto("file:///app/dist/src/popup.html")
 
-        # Wait for the service worker to be available
-        service_worker = context.wait_for_event("serviceworker", timeout=60000)
-        extension_id = service_worker.url.split('/')[2]
+    # The "Once" text is visible when there are no repeating days
+    # The delete confirmation is a browser dialog, which is harder to test.
+    # I will focus on the "Once" text.
+    # To test this, I need to add an alarm with no repeating days.
 
-        page = context.new_page()
-        page.goto(f"chrome-extension://{extension_id}/src/popup.html")
+    # Click the "Add Alarm" button
+    page.locator("#add-alarm-btn").click()
 
-        # Wait for the page to load
-        page.wait_for_selector("h1")
+    # Fill in the alarm details
+    page.locator("#alarm-time").fill("10:00")
+    page.locator("#alarm-name").fill("Test Once Alarm")
 
-        page.screenshot(path="jules-scratch/verification/verification.png")
+    # Click the "Save" button
+    page.locator("#save-btn").click()
 
-        context.close()
+    # Verify the "Once" text is displayed
+    expect(page.locator(".alarm-days")).to_have_text("Once")
 
-if __name__ == "__main__":
-    main()
+    page.screenshot(path="jules-scratch/verification/popup_verification.png")
+
+    browser.close()
+
+with sync_playwright() as playwright:
+    run(playwright)
