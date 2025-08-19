@@ -162,7 +162,7 @@ const renderAlarms = () => {
 
     const alarmTime = document.createElement('div');
     alarmTime.className = 'alarm-time';
-    alarmTime.textContent = alarm.time;
+    alarmTime.textContent = convert24hTo12h(alarm.time);
 
     const alarmName = document.createElement('div');
     alarmName.className = 'alarm-name';

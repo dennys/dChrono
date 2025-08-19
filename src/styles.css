@@ -444,3 +444,9 @@ body.light-theme .icon-btn:hover {
   color: var(--on-primary-color);
   border-color: var(--primary-color);
 }
+
+/* Timepicker UI Overrides */
+.timepicker-ui-modal {
+  transform: scale(0.8);
+  transform-origin: center top;
+}
